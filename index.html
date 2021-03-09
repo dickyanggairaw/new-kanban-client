@@ -9,13 +9,15 @@
     <title>Kanban</title>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Todo</a></li>
-            <li><a href="#">About</a></li>
-        </ul>
-    </nav>
+    <div class="container-fluid">
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Todo</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+        </nav>
+    </div>
     <div id="app">
         <tbody>
             <!--Add Task-->
@@ -23,13 +25,19 @@
                 <div class="container">
                     <div class="form">
                         <form action="">
-                            <label for="">Todo</label><br>
-                            <input type="text" v-model="inputTodo"><br>
-                            <label for="">Description</label><br>
-                            <input type="textarea" v-model="inputDescription"><br><br>
-                            <label for="">Assign</label><br>
-                            <input type="text" v-model="inputAssign"><br><br>
-                            <input @click.prevent="addTask" class="btn-primary" type="button" value="Submit">
+                            <div class="mb-3">
+                                <label for="">Todo</label><br>
+                                <input type="text" v-model="inputTodo" required><br>
+                            </div>
+                            <div class="md-3">
+                                <label for="">Description</label><br>
+                                <input type="textarea" v-model="inputDescription" required><br>
+                            </div>
+                            <div class="md-3">
+                                <label for="">Assign</label><br>
+                                <input type="text" v-model="inputAssign" required><br><br>
+                            </div>                         
+                            <button @click.prevent="addTask" type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </div>
                 </div>                

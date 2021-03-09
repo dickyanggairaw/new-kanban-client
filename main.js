@@ -68,6 +68,9 @@ var app = new Vue({
                 assign: this.inputAssign
             }
             this.backlogs.push(create)
+            this.inputAssign = ""
+            this.inputDescription = ""
+            this.inputTodo = ""
         },
         deleteTask(id){
             console.log(`delete task dengan id ${id}`)
