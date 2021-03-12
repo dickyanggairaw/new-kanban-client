@@ -22,29 +22,52 @@
         </div>
         <button type="submit" class="btn btn-dark w-20">Login</button>
       </form>
+      <div class="container">
+        <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess" :onFailure="onFailure"></GoogleLogin>
+      </div>
+     
   </div>
 </template>
 
 <script>
 
+import GoogleLogin from 'vue-google-login';
 
 export default {
     name: 'Login',
     data() {
         return {
             email_login: '',
-            password_login: ''
-        };
-    },
+            password_login: '',
+            params: {
+                client_id: "96197829282-e627910rfp7jeftvbodcgj3ulgbprapl.apps.googleusercontent.com"
+            },
+            renderParams: {
+                    width: 250,
+                    height: 50,
+                    longtitle: true
+                }
+            }
+        },
     methods: {
-        login(){
-          this.$emit('userLogin', {
-            email: this.email_login,
-            password: this.password_login
-          })
-          this.email_login = ''
-          this.password_login = ''
-        }
+      login(){
+        this.$emit('userLogin', {
+          email: this.email_login,
+          password: this.password_login
+        })
+        this.email_login = ''
+        this.password_login = ''  
+      },    
+      onSuccess(googleUser) {
+        const id_token = googleUser.getAuthResponse().id_token;
+        this.$emit('idToken', id_token)
+      },
+      onFailure(){
+
+      }
+    },
+    components:{
+      GoogleLogin
     }
 };
 </script>

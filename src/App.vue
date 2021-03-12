@@ -1,17 +1,18 @@
 <template>
     <div>
         <div class="container-fluid">
-            <nav>
+            <nav class="navbar">
                 <ul>
                     <li><a href="#" @click.prevent="home">Home</a></li>
                     <li><a href="#" @click.prevent="login" v-if="!isLogin">Login</a></li>
                     <li><a href="#" @click.prevent="register" v-if="!isLogin">Register</a></li>
                 </ul>
-                <a href="" v-if="isLogin" @click.prevent="logout">Log out</a>
+                <a href="" class="m-0" v-if="isLogin" @click.prevent="logout">Log out</a>
+                <!-- <GoogleLogin v-if="isLogin" :params="params" :logoutButton=true @click.prevent="logout">Logout</GoogleLogin> -->
             </nav>
         </div><br><br>
-        <Home v-if="page === 'home'" :dataTask="data" :userEmail="userEmail" :userLogin="isLogin" :changeDataLogin="changeLogin" v-on:deletedTask="deleteTask" v-on:editTask="editTask"></Home>
-        <Login v-else-if="page === 'login'" v-on:userLogin="userLogin"></Login>
+        <Home v-if="page === 'home'" :dataTask="data" :userLogin="isLogin" v-on:createTask="createTask" v-on:deletedTask="deleteTask" v-on:editTask="editTask"></Home>
+        <Login v-else-if="page === 'login'" v-on:userLogin="userLogin" v-on:idToken="loginGoogle"></Login>
         <Register v-else-if="page === 'register'" v-on:userRegister="userRegister"></Register>
         <Create v-else-if="page === 'create'" v-on:createTask="create"></Create>
         <Edit v-else-if="page === 'edit'" :editData="editData" v-on:editingTask="editingTask"></Edit>
@@ -33,7 +34,15 @@ export default {
         page: 'home',
         url: "http://localhost:3000",
         data: [],
-        editData: {}
+        editData: {},
+        params: {
+                client_id: "96197829282-e627910rfp7jeftvbodcgj3ulgbprapl.apps.googleusercontent.com"
+            },
+        renderParams: {
+                width: 250,
+                height: 50,
+                longtitle: true
+            }
         };
     },
     components: {
@@ -41,7 +50,7 @@ export default {
         Login,
         Register,
         Create,
-        Edit
+        Edit,
     },
     methods:{
         home(){
@@ -53,15 +62,15 @@ export default {
         register(){
             this.page = 'register'
         },
+        createTask(){
+            this.page = 'create'
+        },
         logout(){
+            console.log('bisa')
             this.isLogin = false
             localStorage.removeItem('access_token')   
             this.page = 'home'    
             this.userEmail = ''     
-        },
-        changeLogin(value, page){
-            this.isLogin = value
-            this.page = page
         },
         fetchData(){
             axios({
@@ -75,9 +84,6 @@ export default {
                 .catch(error =>{
                     console.log(error)
                 })
-        },
-        getPage(value){
-            this.page = value
         },
         deleteTask(id){
             axios({
@@ -162,7 +168,7 @@ export default {
                 this.fetchData()
             })
             .catch(err=>{
-                console.log(err)
+                alert("Email or Password wrong")
             })
         },
         userRegister(data){
@@ -178,8 +184,31 @@ export default {
                 this.page = 'login'
             })
             .catch(err=>{
-                console.log(err)
+                alert("email must be unique")
             })
+        },
+        loginGoogle(id_token) {
+            // This only gets the user information: id, name, imageUrl and email
+            axios({
+                method: 'POST',
+                url: this.url + '/oauth',
+                data: {
+                    id_token
+                }
+            })
+                .then((res)=>{
+                    // console.log(res.data.access_token)
+                    localStorage.setItem('access_token', res.data.access_token)
+                    this.isLogin = true
+                    this.page = 'home'
+                    this.fetchData()
+                })
+                .catch(err=>{
+                    console.log(err)
+                })
+        },
+        onFailure(){
+
         }
     },
     created(){
@@ -214,5 +243,6 @@ nav a{
     padding: 10px;
     text-decoration: none;
     color: white; 
+    text-align: right;
 }
 </style>

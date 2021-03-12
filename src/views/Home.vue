@@ -1,9 +1,8 @@
 <template>
     <div>
         <div v-if="userLogin" class="container">
-            <h2>{{ userEmail }}</h2><br>
-            <button type="submit" class="btn btn-dark w-10" @click.prevent="create">Create Task</button>
-        </div>
+            <button type="submit" class="btn btn-dark w-10" @click="$emit('createTask', 'create')">Create Task</button>
+        </div><br>
         <div v-if="userLogin" class="container">
             <div class="row">
                 <Category :title="backlog" :datas="dataBacklog" v-on:deleteTask="deleteTask" v-on:editTask="editTask"></Category>
@@ -25,7 +24,7 @@ import Category from '../components/Category.vue'
 
 export default {
     name: 'Home',
-    props:['dataTask', 'userLogin', 'userEmail'],
+    props:['dataTask', 'userLogin'],
     data() {
         return {
             backlog: "Backlog",
@@ -38,9 +37,6 @@ export default {
         Category
     },
     methods: {
-        create(){
-            this.changeDataLogin(true, 'create')
-        },
         deleteTask(id){
             this.$emit('deletedTask', id)
         },

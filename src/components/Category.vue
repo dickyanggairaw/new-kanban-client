@@ -1,10 +1,12 @@
 <template>
-    <div class="col-3">
-        <h2>{{title}}</h2>
-        <div class="card" v-for="data in datas" :key="data.id">
-            <div class="card-body">
-                <CardTask :title="data.title" :email="data.User" :id="data.id" v-on:emitDelete="emitDelete" v-on:editTask="editTask"></CardTask>    
-            </div>            
+    <div class="col-6 col-sm-3">
+        <div class="title">
+            <h2>{{title}}</h2>
+            <div class="card" v-for="data in datas" :key="data.id">
+                <div class="card-body">
+                    <CardTask :title="data.title" :email="data.User" :id="data.id" v-on:emitDelete="emitDelete" v-on:editTask="editTask"></CardTask>    
+                </div>            
+            </div>
         </div>
     </div>
 </template>
@@ -39,5 +41,17 @@ export default {
 <style scoped>
     h2{
         text-align: center;
+        position: relative;
+    }
+    .title{
+        background-color: orange;
+        padding: 10px;
+        border-radius: 10px;
+        height: 550px;
+        overflow: scroll;
+        margin-bottom: 10px;
+    }
+    .card{
+        margin-bottom: 10px;
     }
 </style>

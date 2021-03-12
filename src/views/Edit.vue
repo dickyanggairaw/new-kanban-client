@@ -1,17 +1,18 @@
 <template>
     <div>
         <form id="form-create" class="container" @submit.prevent="edit">
-        <div class="form-group col-6">
+        <div class="form-group">
           <input
             type="title"
             class="form-control"
             v-model="title"
+            required
           />
         </div>
         <div class="form-group">
           <label for="category">Category</label>
 
-            <select v-model="selected">
+            <select v-model="selected" required>
             <option disabled value="">Please select one</option>
                 <option>Backlog</option>
                 <option>Product</option>
