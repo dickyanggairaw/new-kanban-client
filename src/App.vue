@@ -32,7 +32,7 @@ export default {
         return {
         isLogin: false,
         page: 'home',
-        url: "http://localhost:3000",
+        url: "https://kanban-board-ku.herokuapp.com",
         data: [],
         editData: {},
         params: {
@@ -96,7 +96,7 @@ export default {
                     this.fetchData()
                 })
                 .catch(error=>{
-                    console.log(error)
+                    alert("You can only delete your task")
                 })
         },
         editTask(id){
@@ -110,7 +110,7 @@ export default {
                     this.page = 'edit'
                 })
                 .catch(error=>{
-                    console.log(error)
+                    alert("You can only edit your task")
                 })
         },
         editingTask(data){
